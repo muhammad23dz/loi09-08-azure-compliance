@@ -1,1 +1,14 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "<storage-connection-string>",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "EVIDENCE_STORAGE_ACCOUNT": "<evidence-storage-account-name>",
+    "KEY_VAULT_NAME": "<key-vault-name>",
+    "SIGNING_KEY_NAME": "evidence-signing-key",
+    "AZURE_TENANT_ID": "<tenant-id>",
+    "AZURE_CLIENT_ID": "<client-id>",
+    "AZURE_CLIENT_SECRET": "<client-secret>"
+  }
+}
 
