@@ -1,1 +1,77 @@
+name: CI/CD - Deploy to Azure
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_RESOURCE_GROUP: loi09-rg
+      LOCATION: northeurope
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Azure CLI
+        uses: azure/setup-azcli@v3
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+
+      - name: Create resource group
+        run: |
+          az group create -n $AZURE_RESOURCE_GROUP -l $LOCATION
+
+      - name: Deploy Bicep
+        run: |
+          az deployment group create -g $AZURE_RESOURCE_GROUP -f bicep/main.bicep
+
+      - name: Create Policy Definitions
+        run: |
+          az policy definition create --name require-storage-encryption --rules policies/policy-storage-encryption.json --mode Indexed --display-name "Require storage encryption"
+          az policy definition create --name require-secure-transfer --rules policies/policy-storage-secure-transfer.json --mode Indexed --display-name "Require secure transfer on storage"
+          az policy definition create --name require-diagnostics --rules policies/policy-diagnostics-enabled.json --mode Indexed --display-name "Require diagnostics"
+          az policy definition create --name require-data-class-tag --rules policies/policy-require-data-class-tag.json --mode Indexed --display-name "Require data_class tag"
+          az policy definition create --name allowed-locations-pii --rules policies/policy-allowed-locations.json --mode Indexed --display-name "Allowed locations for PII"
+
+      - name: Create Initiative (policy set)
+        run: |
+          az policy set-definition create -n loi09-08-initiative --rules policies/initiative-loi09-08.json --display-name "LOI09-08 Initiative"
+
+      - name: Assign Initiative at subscription scope
+        run: |
+          az policy assignment create --name loi09-08-assignment --policy loi09-08-initiative --scope /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Package Function
+        run: |
+          cd functions/evidence-function
+          python3 -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
+          deactivate
+          cd ../..
+
+      - name: Deploy Function (zip deploy)
+        run: |
+          # get function app name from bicep output
+          FUNCNAME=$(az deployment group show -g $AZURE_RESOURCE_GROUP --name mainDeployment --query properties.outputs.functionAppName.value -o tsv 2>/dev/null || echo "")
+          # fallback if Bicep output name unknown; you can set it manually
+          if [ -z "$FUNCNAME" ]; then
+            echo "Function name not found from bicep output. Please update workflow or set manually."
+            exit 1
+          fi
+          echo "Function App name: $FUNCNAME"
+          cd functions/evidence-function
+          zip -r function.zip .
+          az webapp deployment source config-zip -g $AZURE_RESOURCE_GROUP -n $FUNCNAME --src function.zip
 
