@@ -1,1 +1,32 @@
+{
+  "properties": {
+    "displayName": "LOI09-08 Initiative",
+    "description": "Initiative grouping policies to enforce core controls for Loi 09-08 compliance.",
+    "metadata": {
+      "category": "LOI09-08"
+    },
+    "policyDefinitions": [
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/require-storage-encryption"
+      },
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/require-secure-transfer"
+      },
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/require-diagnostics"
+      },
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/require-data-class-tag"
+      },
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/allowed-locations-pii",
+        "parameters": {
+          "allowedLocations": {
+            "value": ["North Europe", "West Europe", "France Central"]
+          }
+        }
+      }
+    ]
+  }
+}
 
