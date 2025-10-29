@@ -1,1 +1,24 @@
+{
+  "properties": {
+    "displayName": "Require storage account encryption with Microsoft-managed keys",
+    "description": "Storage accounts must have encryption enabled at rest (service-managed keys).",
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          { "field": "type", "equals": "Microsoft.Storage/storageAccounts" },
+          {
+            "anyOf": [
+              { "field": "Microsoft.Storage/storageAccounts/encryption.services.blob.enabled", "equals": false },
+              { "field": "Microsoft.Storage/storageAccounts/encryption.services.file.enabled", "equals": false }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}
 
