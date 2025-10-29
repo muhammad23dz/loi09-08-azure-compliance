@@ -1,1 +1,17 @@
+{
+  "properties": {
+    "displayName": "Require data_class tag on resource groups containing PII",
+    "description": "Resource groups that contain PII resources must include a data_class tag (e.g., PII).",
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          { "field": "type", "equals": "Microsoft.Resources/subscriptions/resourceGroups" },
+          { "not": { "field": "tags['data_class']", "exists": true } }
+        ]
+      },
+      "then": { "effect": "audit" }
+    }
+  }
+}
 
