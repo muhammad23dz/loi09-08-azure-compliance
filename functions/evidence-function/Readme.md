@@ -1,0 +1,1 @@
+This function is an HTTP-trigger Azure Function that accepts a JSON payload (policy event or manual payload), builds an evidence JSON, signs it with a Key Vault key, and uploads to the evidence storage account in a evidence/ container.
