@@ -1,4 +1,4 @@
-_Ensures logs/diagnostics exist (audit mode so operators can roll out).
+#Ensures logs/diagnostics exist (audit mode so operators can roll out).
 {
   "properties": {
     "displayName": "Require diagnostic settings for key resource types",
