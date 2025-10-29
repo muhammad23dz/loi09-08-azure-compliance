@@ -22,4 +22,41 @@ This repository provides an end-to-end demo to **automate Azure compliance for M
 1. Clone this repo locally.
 2. Edit `bicep/main.bicep` if you want to change resource names/locations.
 3. Login and create a resource group:
+   az login
+az group create -n loi09-rg -l northeurope
+
+4. Deploy Bicep:
+
+
+az deployment group create -g loi09-rg -f bicep/main.bicep
+
+5. Register policies & initiative:
+
+
+az policy definition create -n require-storage-encryption --rules policies/policy-storage-encryption.json --mode Indexed --display-name "Require storage encryption"
+az policy definition create -n require-secure-transfer --rules policies/policy-storage-secure-transfer.json --mode Indexed --display-name "Require secure transfer on storage"
+az policy definition create -n require-diagnostics --rules policies/policy-diagnostics-enabled.json --mode Indexed --display-name "Require diagnostic settings"
+az policy definition create -n require-data-class-tag --rules policies/policy-require-data-class-tag.json --mode Indexed --display-name "Require data_class tag"
+az policy definition create -n allowed-locations-pii --rules policies/policy-allowed-locations.json --mode Indexed --display-name "Allowed locations for PII resources"
+
+az policy set-definition create -n loi09-08-initiative -d policies/initiative-loi09-08.json
+az policy assignment create --name loi09-08-assignment --scope /subscriptions/<SUBSCRIPTION_ID> --policy loi09-08-initiative
+
+Replace `<SUBSCRIPTION_ID>` with your subscription id.
+
+6. Deploy function (instructions in functions/README-like comments). Or let GitHub Actions do it.
+
+## GitHub Actions secrets (set in repo Settings -> Secrets):
+- AZURE_CLIENT_ID
+- AZURE_CLIENT_SECRET
+- AZURE_TENANT_ID
+- AZURE_SUBSCRIPTION_ID
+
+## Demo
+- Create a non-compliant storage account (e.g., allow public access, no diagnostics). Watch Azure Policy report noncompliance; the Function can be triggered to create evidence and store it.
+
+## Notes
+This repo is a starting point. Policies are intentionally readable and simple to help learning. For production, harden keys, enable Key Vault RBAC, and review policies with legal counsel.
+
+
 
