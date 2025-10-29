@@ -147,7 +147,7 @@ These policies enforce:
 
 ### 7️-Deploy the Azure Function (choose one method)
 
-####  Option A — Manual (local)
+####  Option A : Manual (local)
 
 ```bash
 cd functions/evidence-function
@@ -219,7 +219,7 @@ curl -X POST "<FUNCTION_URL>?code=<FUNCTION_KEY>" \
 }
 ```
 
-Now check your **evidence container** — a signed JSON file should appear.
+Now check your **evidence container** : a signed JSON file should appear.
 
 ---
 
