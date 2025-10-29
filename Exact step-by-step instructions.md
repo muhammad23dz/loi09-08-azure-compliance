@@ -8,11 +8,11 @@ This guide explains **exactly what to do after cloning** this repository to depl
 
 Before you start, make sure the following are already set up:
 
-✅ Active **Azure subscription** and Resource Group  
-✅ **Azure CLI** installed and logged in (`az login`)  
-✅ Permissions: **Contributor** or **Owner** + **Policy Contributor**  
-✅ **GitHub repository** linked to this code  
-✅ **GitHub Actions secrets** configured:
+ Active **Azure subscription** and Resource Group  
+ **Azure CLI** installed and logged in (`az login`)  
+ Permissions: **Contributor** or **Owner** + **Policy Contributor**  
+ **GitHub repository** linked to this code  
+ **GitHub Actions secrets** configured:
 - `AZURE_CLIENT_ID`
 - `AZURE_CLIENT_SECRET`
 - `AZURE_TENANT_ID`
