@@ -1,4 +1,3 @@
-#Prevents plaintext HTTP access
 {
   "properties": {
     "displayName": "Require secure transfer (HTTPS) for storage accounts",
