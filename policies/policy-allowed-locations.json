@@ -1,1 +1,26 @@
+{
+  "properties": {
+    "displayName": "Allowed locations for PII resources",
+    "description": "Restrict locations where PII-tagged resources can be created.",
+    "mode": "Indexed",
+    "parameters": {
+      "allowedLocations": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "Allowed locations",
+          "description": "The list of locations that are allowed for PII resources."
+        }
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          { "field": "tags['data_class']", "equals": "PII" },
+          { "not": { "field": "location", "in": "[parameters('allowedLocations')]" } }
+        ]
+      },
+      "then": { "effect": "deny" }
+    }
+  }
+}
 
