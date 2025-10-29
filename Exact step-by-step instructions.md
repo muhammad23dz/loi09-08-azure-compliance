@@ -1,18 +1,10 @@
-Absolutely 🔥 — here’s your **`docs/DEPLOYMENT_GUIDE.md`** file, perfectly formatted and ready to drop into your repo.
-Just copy it exactly as is into `docs/DEPLOYMENT_GUIDE.md`, commit, and push.
-
-It’s written in a professional style that recruiters and reviewers will love — clear, structured, and immediately usable in real Azure environments.
-
----
-
-````markdown
-# 🚀 Deployment Guide — LOI 09-08 Azure Compliance Automation
+#  Deployment Guide — LOI 09-08 Azure Compliance Automation
 
 This guide explains **exactly what to do after cloning** this repository to deploy the full Azure compliance automation solution for **Morocco’s Loi n°09-08** (data protection law).
 
 ---
 
-## 📋 Prerequisites
+##  Prerequisites
 
 Before you start, make sure the following are already set up:
 
@@ -28,9 +20,9 @@ Before you start, make sure the following are already set up:
 
 ---
 
-## ⚙️ Step-by-Step Deployment
+##  Step-by-Step Deployment
 
-### 1️⃣ Clone the repository
+### 1 Clone the repository
 
 ```bash
 git clone https://github.com/<your-org>/loi09-08-azure-compliance.git
@@ -49,7 +41,7 @@ Review the structure:
 
 ---
 
-### 2️⃣ Create the Resource Group (if not already)
+### 2️ Create the Resource Group (if not already)
 
 ```bash
 az group create -n loi09-rg -l northeurope
@@ -59,7 +51,7 @@ You can change the name or region — just ensure it matches what’s referenced
 
 ---
 
-### 3️⃣ Deploy infrastructure (Bicep)
+### 3️ Deploy infrastructure (Bicep)
 
 ```bash
 az deployment group create \
@@ -68,7 +60,7 @@ az deployment group create \
   --template-file bicep/main.bicep
 ```
 
-✅ This deploys:
+This deploys:
 
 * Evidence Storage Account
 * Function App + Hosting Plan
@@ -87,7 +79,7 @@ managedIdentityClientId
 
 ---
 
-### 4️⃣ Create the signing key in Key Vault
+### 4️ Create the signing key in Key Vault
 
 ```bash
 az keyvault key create \
@@ -101,7 +93,7 @@ This key is used by the Azure Function to **sign evidence JSONs cryptographicall
 
 ---
 
-### 5️⃣ Create the “evidence” blob container
+### 5️ Create the “evidence” blob container
 
 ```bash
 az storage container create \
@@ -123,7 +115,7 @@ This enables **immutable retention** of evidence for 90 days.
 
 ---
 
-### 6️⃣ Deploy all Azure Policies
+### 6️ Deploy all Azure Policies
 
 ```bash
 az policy definition create --name require-storage-encryption --rules policies/policy-storage-encryption.json --mode Indexed
@@ -153,9 +145,9 @@ These policies enforce:
 
 ---
 
-### 7️⃣ Deploy the Azure Function (choose one method)
+### 7️ Deploy the Azure Function (choose one method)
 
-#### 🧭 Option A — Manual (local)
+####  Option A — Manual (local)
 
 ```bash
 cd functions/evidence-function
@@ -164,7 +156,7 @@ FUNCNAME=$(az deployment group show -g loi09-rg --name mainDeployment --query pr
 az webapp deployment source config-zip -g loi09-rg -n $FUNCNAME --src function.zip
 ```
 
-#### 🧩 Option B — CI/CD via GitHub Actions
+####  Option B — CI/CD via GitHub Actions
 
 Just push your code to the `main` branch:
 
@@ -185,7 +177,7 @@ Check progress under your repo → **Actions** tab.
 
 ---
 
-### 8️⃣ Configure the Function App
+### 8️ Configure the Function App
 
 In Azure Portal → Function App → **Configuration**, verify:
 
@@ -200,7 +192,7 @@ Also confirm that the **Managed Identity** assigned to the Function has access t
 
 ---
 
-### 9️⃣ Test the Function (create sample evidence)
+### 9️ Test the Function (create sample evidence)
 
 Get your Function URL and key (Azure Portal → Function → Get Function URL).
 
@@ -217,7 +209,7 @@ curl -X POST "<FUNCTION_URL>?code=<FUNCTION_KEY>" \
       }'
 ```
 
-✅ Response example:
+ Response example:
 
 ```json
 {
@@ -231,7 +223,7 @@ Now check your **evidence container** — a signed JSON file should appear.
 
 ---
 
-### 🔎 10️⃣ Verify Compliance in Azure Portal
+### 🔎 10 Verify Compliance in Azure Portal
 
 Go to **Azure Portal → Policy → Assignments → LOI09-08 Initiative → Compliance**.
 You’ll see compliance status for all resources.
@@ -239,7 +231,7 @@ When you fix noncompliant ones, you can generate new evidence records through th
 
 ---
 
-## 🧠 Recap
+##  Recap
 
 | Component                   | Purpose                                    |
 | --------------------------- | ------------------------------------------ |
@@ -251,7 +243,7 @@ When you fix noncompliant ones, you can generate new evidence records through th
 
 ---
 
-## 🔐 Optional Enhancements
+##  Optional Enhancements
 
 * Enable **Key Vault purge protection** and RBAC mode
 * Connect **Microsoft Defender for Cloud** for posture management
@@ -260,7 +252,7 @@ When you fix noncompliant ones, you can generate new evidence records through th
 
 ---
 
-## ✅ You’re Done
+##  You’re Done
 
 You’ve successfully deployed the **LOI 09-08 Azure Compliance Automation** solution.
 
@@ -270,6 +262,6 @@ You now have:
 * Automatic evidence generation with cryptographic signatures
 * A full CI/CD pipeline to redeploy and scale this system
 
-👏 You’re ready to demo this professionally or extend it for real organizational compliance.
+ 
 
 
