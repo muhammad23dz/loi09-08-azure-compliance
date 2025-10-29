@@ -1,1 +1,18 @@
+%prevents plaintext HTTP access
+{
+  "properties": {
+    "displayName": "Require secure transfer (HTTPS) for storage accounts",
+    "description": "Storage accounts must require HTTPS (supportsHttpsTrafficOnly = true).",
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          { "field": "type", "equals": "Microsoft.Storage/storageAccounts" },
+          { "not": { "field": "Microsoft.Storage/storageAccounts/supportsHttpsTrafficOnly", "equals": true } }
+        ]
+      },
+      "then": { "effect": "deny" }
+    }
+  }
+}
 
