@@ -1,1 +1,28 @@
+_Ensures logs/diagnostics exist (audit mode so operators can roll out).
+{
+  "properties": {
+    "displayName": "Require diagnostic settings for key resource types",
+    "description": "Diagnostic settings must be enabled for Storage Accounts and Key Vaults.",
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "anyOf": [
+          {
+            "allOf": [
+              { "field": "type", "equals": "Microsoft.Storage/storageAccounts" },
+              { "not": { "field": "Microsoft.Insights/diagnosticSettings", "exists": true } }
+            ]
+          },
+          {
+            "allOf": [
+              { "field": "type", "equals": "Microsoft.KeyVault/vaults" },
+              { "not": { "field": "Microsoft.Insights/diagnosticSettings", "exists": true } }
+            ]
+          }
+        ]
+      },
+      "then": { "effect": "audit" }
+    }
+  }
+}
 
