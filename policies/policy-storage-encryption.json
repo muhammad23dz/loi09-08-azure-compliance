@@ -1,4 +1,3 @@
-#enforces encryption at rest for storage accounts (important for PII).
 {
   "properties": {
     "displayName": "Require storage account encryption with Microsoft-managed keys",
