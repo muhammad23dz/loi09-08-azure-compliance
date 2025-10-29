@@ -1,4 +1,4 @@
-#  Deployment Guide — LOI 09-08 Azure Compliance Automation
+#  Deployment Guide LOI 09-08 Azure Compliance Automation
 
 This guide explains **exactly what to do after cloning** this repository to deploy the full Azure compliance automation solution for **Morocco’s Loi n°09-08** (data protection law).
 
@@ -156,7 +156,7 @@ FUNCNAME=$(az deployment group show -g loi09-rg --name mainDeployment --query pr
 az webapp deployment source config-zip -g loi09-rg -n $FUNCNAME --src function.zip
 ```
 
-####  Option B — CI/CD via GitHub Actions
+####  Option B CI/CD via GitHub Actions
 
 Just push your code to the `main` branch:
 
@@ -223,7 +223,7 @@ Now check your **evidence container** — a signed JSON file should appear.
 
 ---
 
-### 🔎 10 Verify Compliance in Azure Portal
+###  10 Verify Compliance in Azure Portal
 
 Go to **Azure Portal → Policy → Assignments → LOI09-08 Initiative → Compliance**.
 You’ll see compliance status for all resources.
@@ -256,7 +256,7 @@ When you fix noncompliant ones, you can generate new evidence records through th
 
 You’ve successfully deployed the **LOI 09-08 Azure Compliance Automation** solution.
 
-You now have:
+
 
 * Continuous compliance evaluation
 * Automatic evidence generation with cryptographic signatures
