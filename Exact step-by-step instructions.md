@@ -22,7 +22,7 @@ Before you start, make sure the following are already set up:
 
 ##  Step-by-Step Deployment
 
-### 1 Clone the repository
+### 1-Clone the repository
 
 ```bash
 git clone https://github.com/<your-org>/loi09-08-azure-compliance.git
@@ -41,7 +41,7 @@ Review the structure:
 
 ---
 
-### 2️ Create the Resource Group (if not already)
+### 2️-Create the Resource Group (if not already)
 
 ```bash
 az group create -n loi09-rg -l northeurope
@@ -51,7 +51,7 @@ You can change the name or region — just ensure it matches what’s referenced
 
 ---
 
-### 3️ Deploy infrastructure (Bicep)
+### 3️-Deploy infrastructure (Bicep)
 
 ```bash
 az deployment group create \
@@ -79,7 +79,7 @@ managedIdentityClientId
 
 ---
 
-### 4️ Create the signing key in Key Vault
+### 4️-Create the signing key in Key Vault
 
 ```bash
 az keyvault key create \
@@ -93,7 +93,7 @@ This key is used by the Azure Function to **sign evidence JSONs cryptographicall
 
 ---
 
-### 5️ Create the “evidence” blob container
+### 5️-Create the “evidence” blob container
 
 ```bash
 az storage container create \
@@ -115,7 +115,7 @@ This enables **immutable retention** of evidence for 90 days.
 
 ---
 
-### 6️ Deploy all Azure Policies
+### 6️-Deploy all Azure Policies
 
 ```bash
 az policy definition create --name require-storage-encryption --rules policies/policy-storage-encryption.json --mode Indexed
@@ -145,7 +145,7 @@ These policies enforce:
 
 ---
 
-### 7️ Deploy the Azure Function (choose one method)
+### 7️-Deploy the Azure Function (choose one method)
 
 ####  Option A — Manual (local)
 
@@ -177,7 +177,7 @@ Check progress under your repo → **Actions** tab.
 
 ---
 
-### 8️ Configure the Function App
+### 8️-Configure the Function App
 
 In Azure Portal → Function App → **Configuration**, verify:
 
@@ -192,7 +192,7 @@ Also confirm that the **Managed Identity** assigned to the Function has access t
 
 ---
 
-### 9️ Test the Function (create sample evidence)
+### 9️-Test the Function (create sample evidence)
 
 Get your Function URL and key (Azure Portal → Function → Get Function URL).
 
@@ -223,7 +223,7 @@ Now check your **evidence container** — a signed JSON file should appear.
 
 ---
 
-###  10 Verify Compliance in Azure Portal
+###  10-Verify Compliance in Azure Portal
 
 Go to **Azure Portal → Policy → Assignments → LOI09-08 Initiative → Compliance**.
 You’ll see compliance status for all resources.
